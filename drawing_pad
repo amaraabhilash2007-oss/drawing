@@ -1,0 +1,87 @@
+from tkinter import *
+from tkinter import colorchooser
+
+# Create window
+root = Tk()
+root.title("Drawing Pad")
+root.geometry("800x600")
+
+# Default pen color
+pen_color = "black"
+
+# Create canvas
+canvas = Canvas(root, bg="white", width=800, height=550)
+canvas.pack()
+
+# Variables to store mouse position
+x, y = 0, 0
+
+# Start drawing
+def start(event):
+    global x, y
+    x = event.x
+    y = event.y
+
+# Draw on canvas
+def draw(event):
+    global x, y
+    canvas.create_line(x, y, event.x, event.y,
+                       fill=pen_color, width=3,
+                       capstyle=ROUND, smooth=True)
+    x = event.x
+    y = event.y
+
+# Select a color
+def choose_color():
+    global pen_color
+    color = colorchooser.askcolor()[1]
+    if color:
+        pen_color = color
+
+# Eraser
+def eraser():
+    global pen_color
+    pen_color = "white"
+
+# Black pen
+def black():
+    global pen_color
+    pen_color = "black"
+
+# Red pen
+def red():
+    global pen_color
+    pen_color = "red"
+
+# Blue pen
+def blue():
+    global pen_color
+    pen_color = "blue"
+
+# Green pen
+def green():
+    global pen_color
+    pen_color = "green"
+
+# Clear canvas
+def clear_canvas():
+    canvas.delete("all")
+
+# Toolbar
+toolbar = Frame(root)
+toolbar.pack(fill=X)
+
+Button(toolbar, text="Black", command=black).pack(side=LEFT, padx=5)
+Button(toolbar, text="Red", command=red).pack(side=LEFT, padx=5)
+Button(toolbar, text="Blue", command=blue).pack(side=LEFT, padx=5)
+Button(toolbar, text="Green", command=green).pack(side=LEFT, padx=5)
+Button(toolbar, text="Choose Color", command=choose_color).pack(side=LEFT, padx=5)
+Button(toolbar, text="Eraser", command=eraser).pack(side=LEFT, padx=5)
+Button(toolbar, text="Clear", command=clear_canvas).pack(side=LEFT, padx=5)
+
+# Mouse events
+canvas.bind("<Button-1>", start)
+canvas.bind("<B1-Motion>", draw)
+
+# Run application
+root.mainloop()
